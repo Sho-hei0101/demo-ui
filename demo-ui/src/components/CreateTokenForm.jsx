@@ -1,63 +1,65 @@
 import React, { useState } from "react";
 
-export default function CreateTokenForm() {
-  const [tokenName, setTokenName] = useState("");
+const CreateTokenForm = () => {
+  const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
-  const [supply, setSupply] = useState("");
+  const [supply, setSupply] = useState(10000);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const tokenData = { tokenName, symbol, supply };
-    localStorage.setItem("tokenData", JSON.stringify(tokenData));
-    alert("Token created and saved to localStorage!");
+
+    const newToken = { name, symbol, supply };
+
+    // 保存処理：既存のトークンを取得して新しいトークンを追加
+    const existingTokens = JSON.parse(localStorage.getItem("tokens") || "[]");
+    existingTokens.push(newToken);
+    localStorage.setItem("tokens", JSON.stringify(existingTokens));
+
+    alert(`トークンを作成しました：\nName: ${name}, Symbol: ${symbol}, Supply: ${supply}`);
+    setName("");
+    setSymbol("");
+    setSupply(10000);
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <div className="max-w-md mx-auto bg-gray-800 p-6 rounded-xl shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Create Token</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block mb-1">Token Name</label>
-            <input
-              type="text"
-              value={tokenName}
-              onChange={(e) => setTokenName(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded"
-              placeholder="Enter token name"
-              required
-            />
-          </div>
-          <div>
-            <label className="block mb-1">Symbol</label>
-            <input
-              type="text"
-              value={symbol}
-              onChange={(e) => setSymbol(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded"
-              placeholder="e.g. ATH"
-              required
-            />
-          </div>
-          <div>
-            <label className="block mb-1">Initial Supply</label>
-            <input
-              type="number"
-              value={supply}
-              onChange={(e) => setSupply(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded"
-              placeholder="1000000"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Create Token
-          </button>
-        </form>
+    <form onSubmit={handleSubmit} style={{ maxWidth: 400, margin: "auto" }}>
+      <h2 className="text-xl font-bold mb-4">🪙 フリートークン作成</h2>
+      <div>
+        <label className="block">Token Name</label>
+        <input
+          className="border w-full p-2 mb-2"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
       </div>
-    </div>
+      <div>
+        <label className="block">Symbol</label>
+        <input
+          className="border w-full p-2 mb-2"
+          value={symbol}
+          onChange={(e) => setSymbol(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label className="block">Initial Supply</label>
+        <input
+          type="number"
+          className="border w-full p-2 mb-4"
+          value={supply}
+          onChange={(e) => setSupply(Number(e.target.value))}
+          required
+        />
+      </div>
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Create Token
+      </button>
+    </form>
   );
-}
+};
+
+export default CreateTokenForm;

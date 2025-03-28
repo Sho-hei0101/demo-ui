@@ -4,32 +4,29 @@ export default function ProfileList() {
   const [profiles, setProfiles] = useState([]);
 
   useEffect(() => {
-    const storedData = localStorage.getItem("playerProfile");
-    if (storedData) {
-      setProfiles([JSON.parse(storedData)]);
-    }
+    const stored = JSON.parse(localStorage.getItem("profiles") || "[]");
+    setProfiles(stored);
   }, []);
 
+  if (profiles.length === 0) {
+    return <p className="text-center mt-10 text-gray-400">No profiles submitted yet.</p>;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h2 className="text-2xl font-bold mb-6">📄 Submitted Player Profiles</h2>
-      {profiles.length === 0 ? (
-        <p>No profiles submitted yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {profiles.map((profile, index) => (
-            <div key={index} className="bg-gray-800 rounded-xl p-4 shadow-lg">
-              <p><strong>Name:</strong> {profile.name}</p>
-              <p><strong>Nationality:</strong> {profile.nationality}</p>
-              <p><strong>Team:</strong> {profile.team}</p>
-              <p><strong>Date of Birth:</strong> {profile.dob}</p>
-              <p><strong>Player Info:</strong> {profile.bio}</p>
-              <p><strong>Profile URL:</strong> <a href={profile.profileUrl} className="text-blue-400 underline" target="_blank" rel="noreferrer">{profile.profileUrl}</a></p>
-              <p><strong>ID File:</strong> {profile.idFileName}</p>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="max-w-3xl mx-auto px-4">
+      <h2 className="text-2xl font-bold mb-6">📋 Submitted Profiles</h2>
+      <ul className="space-y-4">
+        {profiles.map((p, i) => (
+          <li key={i} className="p-4 border rounded shadow bg-white text-black">
+            <p><strong>Name:</strong> {p.name}</p>
+            <p><strong>Nationality:</strong> {p.nationality}</p>
+            <p><strong>Team:</strong> {p.team}</p>
+            <p><strong>Date of Birth:</strong> {p.dob}</p>
+            <p><strong>Bio:</strong> {p.bio}</p>
+            <p><strong>Profile URL:</strong> <a href={p.url} className="text-blue-600 underline" target="_blank" rel="noreferrer">{p.url}</a></p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

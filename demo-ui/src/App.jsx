@@ -1,25 +1,29 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import CreateTokenForm from "./components/CreateTokenForm";
-import PlayerProfileForm from "./components/PlayerProfileForm";
-import Market from "./components/Market";
-import ProfileList from "./components/ProfileList"; // ✅ ← 1回だけでOK！
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import CreateTokenForm from './components/CreateTokenForm';
+import PlayerProfileForm from './components/PlayerProfileForm';
+import ProfileList from './components/ProfileList';
+import Market from './components/Market';
+import TokenDetail from './components/TokenDetail';
 
 export default function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 p-6">
-        <nav className="mb-6 space-x-4 text-blue-600 underline">
-          <Link to="/">🏠 Market</Link>
-          <Link to="/submit">📝 Submit Profile</Link>
-          <Link to="/create">🛠️ Create Token</Link>
-          <Link to="/profiles">📋 Review Profiles</Link>
-        </nav>
+      <div className="bg-gray-900 min-h-screen text-white p-4">
+      <nav className="bg-gray-900 text-white px-4 py-2 mb-4 shadow">
+  <div className="flex gap-4 text-sm">
+    <Link to="/" className="hover:underline">🏠 Market</Link>
+    <Link to="/submit" className="hover:underline">📋 Submit Profile</Link>
+    <Link to="/create" className="hover:underline">🛠️ Create Token</Link>
+    <Link to="/review" className="hover:underline">📄 Review Profiles</Link>
+  </div>
+</nav>
         <Routes>
           <Route path="/" element={<Market />} />
           <Route path="/submit" element={<PlayerProfileForm />} />
+          <Route path="/review" element={<ProfileList />} />
           <Route path="/create" element={<CreateTokenForm />} />
-          <Route path="/profiles" element={<ProfileList />} />
+          <Route path="/token/:symbol" element={<TokenDetail />} />
         </Routes>
       </div>
     </Router>
